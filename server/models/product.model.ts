@@ -1,27 +1,63 @@
-import mongoose from 'mongoose';
-import { z } from 'zod';
+import { DataTypes, Model, Optional } from "sequelize";
+import sequelize from "../db";
 
-// Esquema de Mongoose
-const productSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  stock: { type: Number, required: true },
-  image: { type: String, required: true },
-  price: { type: Number, required: true }
-});
+interface ProductAttributes {
+  id: number;
+  name: string;
+  description: string;
+  stock: number;
+  image: string;
+  price: number;
+}
 
-const Product = mongoose.model('Product', productSchema);
+interface ProductCreationAttributes extends Optional<ProductAttributes, "id"> {}
+
+class Product
+  extends Model<ProductAttributes, ProductCreationAttributes>
+  implements ProductAttributes
+{
+  public id!: number;
+  public name!: string;
+  public description!: string;
+  public stock!: number;
+  public image!: string;
+  public price!: number;
+
+  // Opcional: puedes definir métodos adicionales aquí
+}
+
+Product.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    price: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    tableName: "products",
+  }
+);
 
 export default Product;
-
-// Esquema de Zod
-export const zodProductSchema = z.object({
-    name: z.string().min(1).max(255).optional(), // Ajusta los límites según tus necesidades
-    description: z.string().min(1).max(1000).optional(),
-    stock: z.number().min(0).optional(),
-    image: z.string().url().optional(),
-    price: z.number().min(0).optional(),
-  });
-
-
-export type ProductType = z.infer<typeof zodProductSchema>;

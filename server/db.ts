@@ -1,13 +1,8 @@
-import mongoose from "mongoose";
-import { MONGO_URI } from "./config";
+import { Sequelize } from "sequelize";
 
-export const connectDB = async () => {
-  mongoose.set("strictQuery", true);
-  try {
-    const conn = await mongoose.connect(MONGO_URI);
-    console.log(conn.connection.name, "connected");
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
-  }
-};
+const sequelize = new Sequelize("store", "root", "smarentes@osnetpr.com", {
+  host: "localhost",
+  dialect: "mysql",
+});
+
+export default sequelize;
