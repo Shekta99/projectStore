@@ -1,28 +1,61 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import '../../styles/components/card.css';
-import img from '../../assets/grogu.gif';
+import "../../styles/components/card.css";
+import img from "../../assets/grogu.gif";
+import { useProductStore } from "../../store/products";
+import { useNavigate } from "react-router-dom";
 
 interface CardProps {
-    title: string;
-    hair_color: string;
-    image?: string;
-  }
+  id: string | number;
+  name: string;
+  description: string;
+  image: string;
+  stock: number;
+  price: number;
+  edit: boolean;
+  handleDelete: (productId: string) => any;
+}
 
+const Card: React.FC<CardProps> = ({
+  id,
+  name,
+  description,
+  image,
+  stock,
+  price,
+  edit,
+  handleDelete,
+}) => {
+  console.log(name, description, image);
 
-const Card: React.FC<CardProps> = ({title, hair_color, image}) => {
-  console.log(title, hair_color, image)
-    return (
-      <div >
-      
+  const { setProduct } = useProductStore();
+  const navigate = useNavigate();
+
+  const updateProduct = () => {
+    setProduct({ id, name, description, image, stock, price });
+    navigate("/edit");
+  };
+  return (
+    <div>
       <div className="myCardContainer">
         <div className="myCard">
-        <h3>{title}</h3>
-        {hair_color === "blond" ? <h1 className="imBlond">I´M BLOND</h1> : <p>{hair_color}</p>}
-        {image === undefined || image === "" ? <img src={img} alt="img" className="img-fluid otherImg"/> : <img src={image} alt={title} className="img-fluid" />}
+          <h3>{name}</h3>
+          <p>{description}</p>
+          {image === undefined || image === "" ? (
+            <img src={img} alt="img" className="img-fluid otherImg" />
+          ) : (
+            <img src={image} alt={name} className="img-fluid" />
+          )}
+          <p>Stock: {stock}</p>
+          <p>Price: ${price}</p>
+          {edit && <button onClick={() => updateProduct()}>Edit</button>}
+          {edit && (
+            <button onClick={() => handleDelete(id + "")}>Eliminar</button>
+          )}
         </div>
       </div>
     </div>
-    );
-}
+  );
+};
 
 export default Card;

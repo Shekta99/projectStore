@@ -4,30 +4,26 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import Navigation from "./components/Navigation";
-import ProtectedRoute from "./components/ProtectedRoute";
 import LandingPage from "./pages/LandingPage";
-import { useAuthStore } from "./store/auth";
-
-
+import ProductPage from "./pages/ProductPage";
+import ProductPageEdit from "./pages/ProductPageEdit";
 
 function App() {
-  const isAuth = useAuthStore(state => state.isAuth);
-
   return (
     <div>
       <BrowserRouter>
+        <Navigation />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/landing" element={<LandingPage />} />
 
-            <Navigation />
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/landing" element={<LandingPage />} />
-              
-              <Route element={<ProtectedRoute isAllowed={isAuth}/>}>
-              <Route path="/home" element={<HomePage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              </Route>
-            </Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/create" element={<ProductPage />} />
+          <Route path="/edit" element={<ProductPageEdit />} />
+          <Route path="/profile" element={<ProfilePage />} />
+        </Routes>
       </BrowserRouter>
     </div>
   );
