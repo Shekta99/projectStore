@@ -23,7 +23,7 @@ app.use("/api/products", productRoutes);
 // Sincroniza los modelos con la base de datos
 const syncDatabase = async () => {
   try {
-    await sequelize.sync({ alter: true }); // Crea las tablas y las actualiza si es necesario
+    await sequelize.sync({ alter: true });
     console.log("Base de datos sincronizada");
   } catch (error) {
     console.error("Error al sincronizar la base de datos:", error);

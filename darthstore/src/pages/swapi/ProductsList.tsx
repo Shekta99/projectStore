@@ -64,10 +64,10 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
   if (products.length === 0) {
     return (
       <div className="menu-row">
-        <div>No products available</div>;
+        <div>No products available</div>
         {isAuth && (
           <div>
-            <button>New Product</button>
+            <button onClick={createProduct}>New Product</button>
           </div>
         )}
       </div>

@@ -105,6 +105,7 @@ const ProductPage = () => {
           message={errorMessage}
           onClose={() => {
             console.log(errorMessage);
+            setSuccessMessage("");
           }}
         />
       )}
