@@ -84,3 +84,30 @@ export const profileHandler = async (req: Request, res: Response) => {
   });
   return res.json(userProfile);
 };
+
+export const updateProfile = async (req: Request, res: Response) => {
+  try {
+    const userData: Partial<SignupSchemaType> = req.body;
+    const user = await User.update(userData, {
+      where: { id: req.params.id },
+    });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const deleteProfile = async (req: Request, res: Response) => {
+  try {
+    const user = await User.destroy({ where: { id: req.params.id } });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(204).send();
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
